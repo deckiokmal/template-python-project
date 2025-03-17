@@ -1,0 +1,31 @@
+services:
+  backend:
+    build: ./backend
+    container_name: flask_api_backend
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+
+  db:
+    image: postgres:latest
+    container_name: flask_api_db
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
+    driver: bridge
+
+volumes:
+  postgres_data:
